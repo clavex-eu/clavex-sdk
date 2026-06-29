@@ -1,0 +1,560 @@
+/**
+ * @clavex/ui — CSS custom properties
+ *
+ * Import once at your application root:
+ *   import "@clavex/ui/styles.css";
+ *
+ * Override any variable on :root (or a specific parent) to theme all
+ * @clavex/ui components without touching their markup or class names.
+ *
+ * Example — dark brand:
+ *   :root {
+ *     --clavex-color-primary:    #7C3AED;
+ *     --clavex-color-primary-fg: #ffffff;
+ *     --clavex-color-bg:         #0f172a;
+ *     --clavex-color-text:       #e2e8f0;
+ *   }
+ */
+
+/* ── Design tokens ──────────────────────────────────────────────────────────── */
+:root {
+  /* Brand */
+  --clavex-color-primary:        #5DCAA5;
+  --clavex-color-primary-hover:  #4bb592;
+  --clavex-color-primary-active: #3da07e;
+  --clavex-color-primary-fg:     #ffffff;
+
+  /* Backgrounds */
+  --clavex-color-bg:             #ffffff;
+  --clavex-color-bg-subtle:      #f9fafb;
+  --clavex-color-bg-hover:       #f3f4f6;
+
+  /* Borders */
+  --clavex-color-border:         #e5e7eb;
+  --clavex-color-border-focus:   #5DCAA5;
+
+  /* Text */
+  --clavex-color-text:           #111827;
+  --clavex-color-text-muted:     #6b7280;
+  --clavex-color-text-placeholder: #9ca3af;
+
+  /* Status */
+  --clavex-color-success:        #10b981;
+  --clavex-color-success-bg:     #ecfdf5;
+  --clavex-color-danger:         #ef4444;
+  --clavex-color-danger-bg:      #fef2f2;
+  --clavex-color-danger-fg:      #ffffff;
+  --clavex-color-warning:        #f59e0b;
+
+  /* Shape */
+  --clavex-radius-sm:            4px;
+  --clavex-radius:               6px;
+  --clavex-radius-lg:            10px;
+  --clavex-radius-full:          9999px;
+
+  /* Typography */
+  --clavex-font-family:          system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --clavex-font-size-xs:         11px;
+  --clavex-font-size-sm:         13px;
+  --clavex-font-size:            14px;
+  --clavex-font-size-lg:         16px;
+  --clavex-line-height:          1.5;
+
+  /* Spacing */
+  --clavex-space-1:              4px;
+  --clavex-space-2:              8px;
+  --clavex-space-3:              12px;
+  --clavex-space-4:              16px;
+  --clavex-space-5:              20px;
+  --clavex-space-6:              24px;
+
+  /* Shadows */
+  --clavex-shadow-sm:            0 1px 2px rgba(0, 0, 0, 0.05);
+  --clavex-shadow:               0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --clavex-shadow-lg:            0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+  /* Animation */
+  --clavex-duration-fast:        120ms;
+  --clavex-duration:             200ms;
+  --clavex-easing:               cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Base reset for all @clavex/ui elements ─────────────────────────────────── */
+[data-clavex-ui],
+[data-clavex-ui] * {
+  box-sizing: border-box;
+  font-family: var(--clavex-font-family);
+  font-size: var(--clavex-font-size);
+  line-height: var(--clavex-line-height);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Button ─────────────────────────────────────────────────────────────────── */
+.clavex-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--clavex-space-2);
+  padding: 0.5rem 1rem;
+  border-radius: var(--clavex-radius);
+  border: 1px solid transparent;
+  font-weight: 500;
+  font-size: var(--clavex-font-size);
+  cursor: pointer;
+  transition: background-color var(--clavex-duration-fast) var(--clavex-easing),
+              border-color var(--clavex-duration-fast) var(--clavex-easing),
+              color var(--clavex-duration-fast) var(--clavex-easing),
+              opacity var(--clavex-duration-fast) var(--clavex-easing);
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.clavex-btn:disabled,
+.clavex-btn[data-loading="true"] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.clavex-btn--primary {
+  background-color: var(--clavex-color-primary);
+  color: var(--clavex-color-primary-fg);
+  border-color: var(--clavex-color-primary);
+}
+.clavex-btn--primary:hover:not(:disabled) {
+  background-color: var(--clavex-color-primary-hover);
+  border-color: var(--clavex-color-primary-hover);
+}
+.clavex-btn--primary:active:not(:disabled) {
+  background-color: var(--clavex-color-primary-active);
+}
+
+.clavex-btn--secondary {
+  background-color: var(--clavex-color-bg);
+  color: var(--clavex-color-text);
+  border-color: var(--clavex-color-border);
+}
+.clavex-btn--secondary:hover:not(:disabled) {
+  background-color: var(--clavex-color-bg-hover);
+  border-color: var(--clavex-color-border-focus);
+}
+
+.clavex-btn--link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--clavex-color-primary);
+  cursor: pointer;
+  font-size: var(--clavex-font-size-sm);
+  text-decoration: underline;
+}
+.clavex-btn--link:hover { color: var(--clavex-color-primary-hover); }
+
+.clavex-btn--danger { color: var(--clavex-color-danger); }
+
+/* ── Spinner ────────────────────────────────────────────────────────────────── */
+@keyframes clavex-spin { to { transform: rotate(360deg); } }
+
+.clavex-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: clavex-spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+/* ── Card ───────────────────────────────────────────────────────────────────── */
+.clavex-card {
+  background: var(--clavex-color-bg);
+  border: 1px solid var(--clavex-color-border);
+  border-radius: var(--clavex-radius-lg);
+  padding: var(--clavex-space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--clavex-space-4);
+  box-shadow: var(--clavex-shadow);
+}
+
+.clavex-card__title {
+  font-size: var(--clavex-font-size-lg);
+  font-weight: 600;
+  color: var(--clavex-color-text);
+  margin: 0;
+}
+
+.clavex-card__desc {
+  font-size: var(--clavex-font-size-sm);
+  color: var(--clavex-color-text-muted);
+  margin: 0;
+}
+
+/* ── Error / success states ─────────────────────────────────────────────────── */
+.clavex-error {
+  font-size: var(--clavex-font-size-sm);
+  color: var(--clavex-color-danger);
+  margin: 0;
+  padding: var(--clavex-space-2) var(--clavex-space-3);
+  background: var(--clavex-color-danger-bg);
+  border-radius: var(--clavex-radius-sm);
+}
+
+.clavex-success {
+  display: flex;
+  align-items: center;
+  gap: var(--clavex-space-2);
+  color: var(--clavex-color-success);
+  font-size: var(--clavex-font-size-sm);
+  font-weight: 500;
+}
+
+/* ── Badge ──────────────────────────────────────────────────────────────────── */
+.clavex-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: var(--clavex-radius-full);
+  font-size: var(--clavex-font-size-xs);
+  font-weight: 500;
+  background: var(--clavex-color-bg-subtle);
+  border: 1px solid var(--clavex-color-border);
+  color: var(--clavex-color-text-muted);
+}
+.clavex-badge--green {
+  background: var(--clavex-color-success-bg);
+  border-color: rgba(16, 185, 129, 0.3);
+  color: var(--clavex-color-success);
+}
+
+.clavex-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--clavex-space-1);
+}
+
+/* ── Avatar ─────────────────────────────────────────────────────────────────── */
+.clavex-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+.clavex-avatar--sm { width: 28px; height: 28px; font-size: var(--clavex-font-size-xs); }
+.clavex-avatar--xs { width: 22px; height: 22px; font-size: 9px; }
+
+.clavex-avatar--initials {
+  background: var(--clavex-color-primary);
+  color: var(--clavex-color-primary-fg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: var(--clavex-font-size-sm);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ── Divider ────────────────────────────────────────────────────────────────── */
+.clavex-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--clavex-space-3);
+  color: var(--clavex-color-text-muted);
+  font-size: var(--clavex-font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.clavex-divider::before,
+.clavex-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--clavex-color-border);
+}
+
+/* ── Tabs ───────────────────────────────────────────────────────────────────── */
+.clavex-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--clavex-color-border);
+  gap: 0;
+}
+
+.clavex-tab {
+  padding: var(--clavex-space-2) var(--clavex-space-4);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  font-size: var(--clavex-font-size-sm);
+  font-weight: 500;
+  color: var(--clavex-color-text-muted);
+  cursor: pointer;
+  transition: color var(--clavex-duration-fast), border-color var(--clavex-duration-fast);
+}
+.clavex-tab:hover { color: var(--clavex-color-text); }
+.clavex-tab--active {
+  color: var(--clavex-color-primary);
+  border-bottom-color: var(--clavex-color-primary);
+}
+
+/* ── Form elements ──────────────────────────────────────────────────────────── */
+.clavex-label {
+  display: block;
+  font-size: var(--clavex-font-size-xs);
+  font-weight: 500;
+  color: var(--clavex-color-text-muted);
+  margin-bottom: var(--clavex-space-1);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.clavex-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  background: var(--clavex-color-bg);
+  border: 1px solid var(--clavex-color-border);
+  border-radius: var(--clavex-radius);
+  color: var(--clavex-color-text);
+  font-family: var(--clavex-font-family);
+  font-size: var(--clavex-font-size);
+  outline: none;
+  transition: border-color var(--clavex-duration-fast);
+}
+.clavex-input:focus { border-color: var(--clavex-color-border-focus); }
+.clavex-input::placeholder { color: var(--clavex-color-text-placeholder); }
+
+/* ── OTP input ──────────────────────────────────────────────────────────────── */
+.clavex-otp-input {
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  background: var(--clavex-color-bg);
+  border: 1px solid var(--clavex-color-border);
+  border-radius: var(--clavex-radius);
+  color: var(--clavex-color-text);
+  font-family: "Courier New", Courier, monospace;
+  font-size: 1.25rem;
+  letter-spacing: 0.4em;
+  text-align: center;
+  outline: none;
+  transition: border-color var(--clavex-duration-fast);
+}
+.clavex-otp-input:focus { border-color: var(--clavex-color-border-focus); }
+
+/* ── Field row (label + value in profile) ───────────────────────────────────── */
+.clavex-field-row {
+  display: flex;
+  align-items: center;
+  gap: var(--clavex-space-3);
+  padding: var(--clavex-space-2) 0;
+  border-bottom: 1px solid var(--clavex-color-border);
+  font-size: var(--clavex-font-size-sm);
+}
+.clavex-field-row:last-child { border-bottom: none; }
+
+.clavex-field-label {
+  flex: 0 0 80px;
+  font-weight: 500;
+  color: var(--clavex-color-text-muted);
+  font-size: var(--clavex-font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ── Skeleton loading ───────────────────────────────────────────────────────── */
+@keyframes clavex-shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+.clavex-skeleton {
+  height: 200px;
+  border-radius: var(--clavex-radius-lg);
+  background: linear-gradient(
+    90deg,
+    var(--clavex-color-bg-subtle) 25%,
+    var(--clavex-color-bg-hover) 37%,
+    var(--clavex-color-bg-subtle) 63%
+  );
+  background-size: 800px 100%;
+  animation: clavex-shimmer 1.4s linear infinite;
+}
+
+/* ── PasskeyEnrollment ──────────────────────────────────────────────────────── */
+.clavex-passkey-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--clavex-color-primary);
+  opacity: 0.12;
+  border-radius: var(--clavex-radius);
+}
+
+.clavex-passkey-header {
+  display: flex;
+  align-items: center;
+  gap: var(--clavex-space-3);
+}
+
+.clavex-passkey-header svg {
+  flex-shrink: 0;
+}
+
+/* ── MFAChallenge ───────────────────────────────────────────────────────────── */
+.clavex-mfa {
+  max-width: 360px;
+}
+
+.clavex-mfa form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--clavex-space-3);
+}
+
+.clavex-mfa .clavex-btn {
+  width: 100%;
+}
+
+/* ── UserProfile ────────────────────────────────────────────────────────────── */
+.clavex-user-profile {
+  max-width: 480px;
+  padding: 0;
+  overflow: hidden;
+}
+
+.clavex-user-profile__header {
+  display: flex;
+  align-items: center;
+  gap: var(--clavex-space-4);
+  padding: var(--clavex-space-5) var(--clavex-space-6);
+  background: var(--clavex-color-bg-subtle);
+  border-bottom: 1px solid var(--clavex-color-border);
+}
+
+.clavex-user-profile__name {
+  font-weight: 600;
+  color: var(--clavex-color-text);
+  margin: 0 0 2px;
+  font-size: var(--clavex-font-size-lg);
+}
+
+.clavex-user-profile__email {
+  font-size: var(--clavex-font-size-sm);
+  color: var(--clavex-color-text-muted);
+  margin: 0;
+}
+
+.clavex-user-profile__org {
+  font-size: var(--clavex-font-size-xs);
+  color: var(--clavex-color-text-muted);
+  margin: 4px 0 0;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.clavex-user-profile__section {
+  padding: var(--clavex-space-4) var(--clavex-space-6);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.clavex-user-profile__footer {
+  padding: var(--clavex-space-3) var(--clavex-space-6);
+  border-top: 1px solid var(--clavex-color-border);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.clavex-user-profile .clavex-tabs {
+  padding: 0 var(--clavex-space-3);
+}
+
+/* ── OrganizationSwitcher ───────────────────────────────────────────────────── */
+.clavex-org-switcher {
+  position: relative;
+  display: inline-block;
+}
+
+.clavex-org-switcher__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--clavex-space-2);
+  padding: var(--clavex-space-1) var(--clavex-space-2);
+  background: var(--clavex-color-bg);
+  border: 1px solid var(--clavex-color-border);
+  border-radius: var(--clavex-radius);
+  cursor: pointer;
+  font-size: var(--clavex-font-size-sm);
+  font-weight: 500;
+  color: var(--clavex-color-text);
+  transition: border-color var(--clavex-duration-fast);
+  white-space: nowrap;
+}
+.clavex-org-switcher__trigger:hover {
+  border-color: var(--clavex-color-border-focus);
+}
+
+.clavex-chevron {
+  width: 14px;
+  height: 14px;
+  color: var(--clavex-color-text-muted);
+  transition: transform var(--clavex-duration-fast);
+  flex-shrink: 0;
+}
+.clavex-chevron--open { transform: rotate(180deg); }
+
+.clavex-org-switcher__dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 50;
+  min-width: 220px;
+  background: var(--clavex-color-bg);
+  border: 1px solid var(--clavex-color-border);
+  border-radius: var(--clavex-radius-lg);
+  box-shadow: var(--clavex-shadow-lg);
+  padding: var(--clavex-space-1);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.clavex-org-switcher__item {
+  display: flex;
+  align-items: center;
+  gap: var(--clavex-space-2);
+  padding: var(--clavex-space-2) var(--clavex-space-3);
+  border-radius: var(--clavex-radius);
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--clavex-color-text);
+  font-size: var(--clavex-font-size-sm);
+  text-align: left;
+  width: 100%;
+  transition: background-color var(--clavex-duration-fast);
+}
+.clavex-org-switcher__item:hover { background: var(--clavex-color-bg-hover); }
+.clavex-org-switcher__item--active { font-weight: 600; }
+
+.clavex-check-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--clavex-color-primary);
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.clavex-spinner-wrap {
+  display: flex;
+  justify-content: center;
+  padding: var(--clavex-space-4);
+  color: var(--clavex-color-text-muted);
+}
+
+/* ── SignInButton full-width variant ────────────────────────────────────────── */
+.clavex-signin-btn--full { width: 100%; }

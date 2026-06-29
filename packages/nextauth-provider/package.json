@@ -1,0 +1,67 @@
+{
+  "name": "@clavex/nextauth-provider",
+  "version": "1.0.0",
+  "description": "Auth.js / NextAuth.js provider for Clavex Identity Platform",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./types": "./types.d.ts"
+  },
+  "files": [
+    "dist/",
+    "src/",
+    "types.d.ts"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts --clean",
+    "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
+    "test": "node --experimental-vm-modules ../../node_modules/.bin/jest"
+  },
+  "keywords": [
+    "clavex",
+    "nextauth",
+    "auth.js",
+    "oidc",
+    "oauth2",
+    "identity"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/clavex-eu/clavex-sdk",
+    "directory": "packages/nextauth-provider"
+  },
+  "peerDependencies": {
+    "next-auth": ">=4.0.0 || ^5.0.0-beta.0"
+  },
+  "peerDependenciesMeta": {
+    "next-auth": {
+      "optional": false
+    }
+  },
+  "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "@types/node": "^20.19.40",
+    "jest": "^29.7.0",
+    "next-auth": "^5.0.0-beta.28",
+    "ts-jest": "^29.4.9",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "homepage": "https://github.com/clavex-eu/clavex-sdk#readme",
+  "bugs": {
+    "url": "https://github.com/clavex-eu/clavex-sdk/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "name": "@clavex/webhooks",
+  "version": "1.0.0",
+  "description": "Webhook signature verification for Clavex Identity Platform",
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
+  "files": [
+    "src/"
+  ],
+  "scripts": {
+    "test": "node test.js"
+  },
+  "keywords": [
+    "clavex",
+    "webhooks",
+    "hmac",
+    "identity"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/clavex-eu/clavex-sdk",
+    "directory": "packages/webhooks"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "homepage": "https://github.com/clavex-eu/clavex-sdk#readme",
+  "bugs": {
+    "url": "https://github.com/clavex-eu/clavex-sdk/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

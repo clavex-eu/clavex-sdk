@@ -1,0 +1,53 @@
+# Publishes a single npm package when a tag like `@clavex/sdk@1.2.3` or
+# `create-clavex-app@1.2.3` is pushed.
+#
+# Requires the `NPM_TOKEN` repository secret (an npm automation token for the
+# @clavex org / packages).
+name: release-npm
+
+on:
+  push:
+    tags:
+      # @scope/name@x.y.z  or  name@x.y.z
+      - '*@*.*.*'
+
+permissions:
+  contents: read
+  id-token: write # for npm provenance
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          registry-url: 'https://registry.npmjs.org'
+
+      - run: npm ci
+
+      - run: npm run build
+
+      - name: Resolve package directory from tag
+        id: pkg
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          name="${tag%@*}"           # strip trailing @version
+          dir=$(node -e "
+            const {execSync}=require('child_process');
+            const ws=JSON.parse(execSync('npm query .workspace',{encoding:'utf8'}));
+            const m=ws.find(p=>p.name==='$name');
+            if(!m){console.error('no workspace named $name');process.exit(1);}
+            console.log(m.location);
+          ")
+          echo "dir=$dir" >> "$GITHUB_OUTPUT"
+          echo "Publishing $name from $dir"
+
+      - name: Publish
+        working-directory: ${{ steps.pkg.outputs.dir }}
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

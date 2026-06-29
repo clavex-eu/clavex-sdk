@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "clavex-webhooks"
+version = "1.0.0"
+description = "Webhook signature verification for Clavex Identity Platform"
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.8"
+keywords = ["clavex", "webhooks", "hmac", "identity"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/clavex-eu/clavex-sdk"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
