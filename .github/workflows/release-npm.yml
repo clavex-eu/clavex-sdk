@@ -8,8 +8,11 @@ name: release-npm
 on:
   push:
     tags:
-      # @scope/name@x.y.z  or  name@x.y.z
+      # name@x.y.z (unscoped, e.g. create-clavex-app@1.0.0)
       - '*@*.*.*'
+      # @scope/name@x.y.z — needs the extra segment because a glob '*' does
+      # not cross the '/' in a tag like @clavex/sdk@1.0.0
+      - '*/*@*.*.*'
 
 permissions:
   contents: read
