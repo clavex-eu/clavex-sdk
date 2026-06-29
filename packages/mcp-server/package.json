@@ -2,7 +2,6 @@
   "name": "@clavex/mcp-server",
   "version": "1.0.0",
   "description": "MCP server for the Clavex Identity Platform — manage orgs, users, IdPs and OIDC clients via natural language",
-  "private": true,
   "type": "module",
   "main": "dist/index.js",
   "bin": {
