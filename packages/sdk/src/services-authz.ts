@@ -15,6 +15,9 @@ import {
   SignSSHKeyResult,
   StartSessionParams,
   BreakGlassConfigParams,
+  DeviceCAParams,
+  DeviceCAConfig,
+  EnrollmentSecretResult,
 } from "./types.js";
 
 function pageQuery(p?: PAMPage): string {
@@ -222,5 +225,70 @@ export class PAMService {
 
   putBreakGlassConfig(orgID: string, p: BreakGlassConfigParams): Promise<void> {
     return this.c.put(this.c.orgPath(orgID, "/pam/break-glass/config"), p);
+  }
+}
+
+/**
+ * DevicePKIService manages the Device CA: a Vault PKI-backed certificate
+ * authority that issues short-lived mTLS client certificates for non-human
+ * (device/machine) identities, distinct from the SSH CA above. Enrollment and
+ * renewal are device-facing operations (authenticated by a bootstrap secret
+ * or the device's current certificate, respectively) and are not exposed
+ * here — this service covers only the admin-facing lifecycle: CA
+ * configuration, per-device enrollment secrets, and revocation.
+ */
+export class DevicePKIService {
+  constructor(private readonly c: HttpClient) {}
+
+  getDeviceCA(orgID: string): Promise<DeviceCAConfig> {
+    return this.c.get(this.c.orgPath(orgID, "/devices/ca"));
+  }
+
+  /** On first save this provisions the Vault PKI mount, root CA, and device signing role. */
+  upsertDeviceCA(orgID: string, p: DeviceCAParams): Promise<void> {
+    return this.c.put(this.c.orgPath(orgID, "/devices/ca"), p);
+  }
+
+  deleteDeviceCA(orgID: string): Promise<void> {
+    return this.c.delete(this.c.orgPath(orgID, "/devices/ca"));
+  }
+
+  /**
+   * Pre-registers a device and issues a fresh one-time bootstrap secret for
+   * it. deviceID is the external device identifier from your provisioning
+   * process (not a Clavex-assigned UUID); fleetID is optional.
+   */
+  createEnrollmentSecret(orgID: string, deviceID: string, fleetID?: string): Promise<EnrollmentSecretResult> {
+    const body: Record<string, unknown> = {};
+    if (fleetID) body.fleet_id = fleetID;
+    return this.c.post(this.c.orgPath(orgID, `/devices/${deviceID}/enrollment-secrets`), body);
+  }
+
+  /**
+   * Revokes an unused (still-pending) bootstrap secret — e.g. an operator
+   * fat-fingered the provisioning run. Has no effect on an already-issued
+   * certificate; use revokeCertificate or revokeDevice for that.
+   */
+  revokeEnrollmentSecret(orgID: string, secretID: string): Promise<void> {
+    return this.c.post(this.c.orgPath(orgID, `/devices/enrollment-secrets/${secretID}/revoke`));
+  }
+
+  /**
+   * Revokes a single issued device certificate by its serial number,
+   * independent of CA rotation — the immediate response for a compromised
+   * device, since waiting for natural certificate expiry is not acceptable
+   * for stolen field hardware.
+   */
+  revokeCertificate(orgID: string, deviceID: string, serial: string, reason?: string): Promise<void> {
+    const body: Record<string, unknown> = {};
+    if (reason) body.reason = reason;
+    return this.c.post(this.c.orgPath(orgID, `/devices/${deviceID}/certificates/${serial}/revoke`), body);
+  }
+
+  /** Revokes every currently-active certificate for a device and flags the device itself revoked. */
+  revokeDevice(orgID: string, deviceID: string, reason?: string): Promise<void> {
+    const body: Record<string, unknown> = {};
+    if (reason) body.reason = reason;
+    return this.c.post(this.c.orgPath(orgID, `/devices/${deviceID}/revoke`), body);
   }
 }

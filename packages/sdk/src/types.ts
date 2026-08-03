@@ -1028,6 +1028,39 @@ export interface SignSSHKeyResult {
   instructions?: string;
 }
 
+// ── Device CA (mTLS device identity) ──────────────────────────────────────────
+
+export interface DeviceCAParams {
+  vault_addr: string;
+  vault_token: string;
+  vault_mount?: string;
+  vault_role: string;
+  cert_ttl_seconds?: number;
+  renewal_window_seconds?: number;
+  bootstrap_secret_ttl_seconds?: number;
+}
+
+export interface DeviceCAConfig {
+  org_id: string;
+  vault_addr: string;
+  vault_mount: string;
+  vault_role: string;
+  ca_certificate_pem?: string;
+  cert_ttl_seconds: number;
+  renewal_window_seconds: number;
+  bootstrap_secret_ttl_seconds: number;
+  created_at: string;
+  updated_at: string;
+}
+
+/** One-time plaintext bootstrap secret — shown only once, store securely. */
+export interface EnrollmentSecretResult {
+  enrollment_secret_id: string;
+  device_id: string;
+  bootstrap_secret: string;
+  expires_at: string;
+}
+
 export interface StartSessionParams {
   access_request_id?: string;
   session_type: string;

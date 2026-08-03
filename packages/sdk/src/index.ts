@@ -70,7 +70,7 @@ import {
   MdocService,
   FederationService,
 } from "./services-eudi.js";
-import { FGAService, PAMService } from "./services-authz.js";
+import { FGAService, PAMService, DevicePKIService } from "./services-authz.js";
 import {
   ServiceAccountService,
   LoginFlowService,
@@ -139,6 +139,7 @@ export class ClavexClient {
   // ── Authorization & privileged access ────────────────────────────────────────
   readonly fga: FGAService;
   readonly pam: PAMService;
+  readonly devicePKI: DevicePKIService;
 
   // ── Governance & lifecycle ───────────────────────────────────────────────────
   readonly serviceAccounts: ServiceAccountService;
@@ -206,6 +207,7 @@ export class ClavexClient {
     // Authorization & privileged access
     this.fga             = new FGAService(this.http);
     this.pam             = new PAMService(this.http);
+    this.devicePKI       = new DevicePKIService(this.http);
 
     // Governance & lifecycle
     this.serviceAccounts = new ServiceAccountService(this.http);
