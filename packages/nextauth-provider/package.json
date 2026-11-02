@@ -21,7 +21,8 @@
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts --clean",
     "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
-    "test": "node --experimental-vm-modules ../../node_modules/.bin/jest"
+    "test": "node --experimental-vm-modules ../../node_modules/.bin/jest --runInBand",
+    "lint": "tsc --noEmit -p tsconfig.consumer.json"
   },
   "keywords": [
     "clavex",

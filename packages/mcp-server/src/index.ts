@@ -21,43 +21,7 @@
  *   npx @clavex/mcp-server
  */
 
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { createServer } from "./server.js";
 
-import { registerOrgTools }          from "./tools/orgs.js";
-import { registerUserTools }         from "./tools/users.js";
-import { registerGroupTools }        from "./tools/groups.js";
-import { registerClientTools }       from "./tools/clients.js";
-import { registerIDPTools }          from "./tools/idps.js";
-import { registerPolicyTools }       from "./tools/policies.js";
-import { registerCIBATools }         from "./tools/ciba.js";
-import { registerFGATools }          from "./tools/fga.js";
-import { registerAccessReviewTools } from "./tools/access_reviews.js";
-import { registerSSFTools }          from "./tools/ssf.js";
-import { registerAITools }           from "./tools/ai.js";
-import { registerPAMTools }          from "./tools/pam.js";
-import { registerDeveloperTools }    from "./tools/developer.js";
-
-const server = new McpServer({
-  name: "clavex-mcp-server",
-  version: "1.2.0",
-});
-
-// Register all tool domains
-registerOrgTools(server);
-registerUserTools(server);
-registerGroupTools(server);
-registerClientTools(server);
-registerIDPTools(server);
-registerPolicyTools(server);
-registerCIBATools(server);
-registerFGATools(server);
-registerAccessReviewTools(server);
-registerSSFTools(server);
-registerAITools(server);
-registerPAMTools(server);
-registerDeveloperTools(server);
-
-// Connect via stdio (Claude Desktop / Claude API compatible)
-const transport = new StdioServerTransport();
-await server.connect(transport);
+await createServer().connect(new StdioServerTransport());

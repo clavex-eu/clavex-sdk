@@ -13,8 +13,9 @@
 import { input, select, password } from "@inquirer/prompts";
 import chalk from "chalk";
 import ora from "ora";
-import { existsSync, mkdirSync, writeFileSync, chmodSync } from "fs";
+import { existsSync, mkdirSync, writeFileSync, chmodSync, realpathSync } from "fs";
 import { join } from "path";
+import { pathToFileURL } from "node:url";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -58,11 +59,11 @@ const NEXT_APP_PAGE = `"use client";
 import { useUser, useSignIn, useSignOut } from "@clavex/react";
 
 export default function Home() {
-  const { user, isSignedIn, isLoading } = useUser();
+  const { user, isSignedIn, isLoaded } = useUser();
   const { signIn } = useSignIn();
   const { signOut } = useSignOut();
 
-  if (isLoading) return <p>Loading…</p>;
+  if (!isLoaded) return <p>Loading…</p>;
 
   return (
     <main style={{ padding: "2rem", fontFamily: "sans-serif" }}>
@@ -86,7 +87,7 @@ import { useHandleRedirectCallback } from "@clavex/react";
 import { useRouter } from "next/navigation";
 
 export default function CallbackPage() {
-  const { handleRedirectCallback } = useHandleRedirectCallback();
+  const handleRedirectCallback = useHandleRedirectCallback();
   const router = useRouter();
 
   useEffect(() => {
@@ -116,11 +117,11 @@ export default function App({ Component, pageProps }: AppProps) {
 const NEXT_PAGES_INDEX = `import { useUser, useSignIn, useSignOut } from "@clavex/react";
 
 export default function Home() {
-  const { user, isSignedIn, isLoading } = useUser();
+  const { user, isSignedIn, isLoaded } = useUser();
   const { signIn } = useSignIn();
   const { signOut } = useSignOut();
 
-  if (isLoading) return <p>Loading…</p>;
+  if (!isLoaded) return <p>Loading…</p>;
 
   return (
     <main style={{ padding: "2rem", fontFamily: "sans-serif" }}>
@@ -143,7 +144,7 @@ import { useHandleRedirectCallback } from "@clavex/react";
 import { useRouter } from "next/router";
 
 export default function CallbackPage() {
-  const { handleRedirectCallback } = useHandleRedirectCallback();
+  const handleRedirectCallback = useHandleRedirectCallback();
   const router = useRouter();
 
   useEffect(() => {
@@ -175,11 +176,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 const VITE_APP = `import { useUser, useSignIn, useSignOut } from "@clavex/react";
 
 export default function App() {
-  const { user, isSignedIn, isLoading } = useUser();
+  const { user, isSignedIn, isLoaded } = useUser();
   const { signIn } = useSignIn();
   const { signOut } = useSignOut();
 
-  if (isLoading) return <p>Loading…</p>;
+  if (!isLoaded) return <p>Loading…</p>;
 
   return (
     <main style={{ padding: "2rem", fontFamily: "sans-serif" }}>
@@ -201,7 +202,7 @@ const VITE_CALLBACK = `import { useEffect } from "react";
 import { useHandleRedirectCallback } from "@clavex/react";
 
 export default function Callback() {
-  const { handleRedirectCallback } = useHandleRedirectCallback();
+  const handleRedirectCallback = useHandleRedirectCallback();
 
   useEffect(() => {
     handleRedirectCallback()
@@ -225,7 +226,7 @@ function write(dir: string, rel: string, content: string): void {
   writeFileSync(abs, content, "utf8");
 }
 
-function scaffoldNextjsApp(dir: string, v: ProjectVars): void {
+export function scaffoldNextjsApp(dir: string, v: ProjectVars): void {
   const { appName } = v;
   const { clientId, issuer } = v.creds;
 
@@ -242,8 +243,8 @@ function scaffoldNextjsApp(dir: string, v: ProjectVars): void {
       next: "^14.0.0",
       react: "^18.0.0",
       "react-dom": "^18.0.0",
-      "@clavex/react": "latest",
-      "@clavex/ui": "latest",
+      "@clavex/react": "^1.1.0",
+      "@clavex/ui": "^0.1.0",
     },
     devDependencies: { typescript: "^5.0.0", "@types/node": "^20", "@types/react": "^18", "@types/react-dom": "^18" },
   }, null, 2));
@@ -254,7 +255,7 @@ function scaffoldNextjsApp(dir: string, v: ProjectVars): void {
   }, null, 2));
 }
 
-function scaffoldNextjsPages(dir: string, v: ProjectVars): void {
+export function scaffoldNextjsPages(dir: string, v: ProjectVars): void {
   const { appName } = v;
   const { clientId, issuer } = v.creds;
 
@@ -271,14 +272,14 @@ function scaffoldNextjsPages(dir: string, v: ProjectVars): void {
       next: "^14.0.0",
       react: "^18.0.0",
       "react-dom": "^18.0.0",
-      "@clavex/react": "latest",
-      "@clavex/ui": "latest",
+      "@clavex/react": "^1.1.0",
+      "@clavex/ui": "^0.1.0",
     },
     devDependencies: { typescript: "^5.0.0", "@types/node": "^20", "@types/react": "^18", "@types/react-dom": "^18" },
   }, null, 2));
 }
 
-function scaffoldViteReact(dir: string, v: ProjectVars): void {
+export function scaffoldViteReact(dir: string, v: ProjectVars): void {
   const { appName } = v;
   const { clientId, issuer } = v.creds;
 
@@ -313,8 +314,8 @@ export default defineConfig({ plugins: [react()] });
     dependencies: {
       react: "^18.0.0",
       "react-dom": "^18.0.0",
-      "@clavex/react": "latest",
-      "@clavex/ui": "latest",
+      "@clavex/react": "^1.1.0",
+      "@clavex/ui": "^0.1.0",
     },
     devDependencies: {
       "@vitejs/plugin-react": "^4.0.0",
@@ -485,7 +486,9 @@ async function main(): Promise<void> {
   console.log();
 }
 
-main().catch((err: unknown) => {
-  console.error(chalk.red("\n  Error:"), err instanceof Error ? err.message : String(err));
-  process.exit(1);
-});
+if (process.argv[1] && import.meta.url === pathToFileURL(realpathSync(process.argv[1])).href) {
+  main().catch((err: unknown) => {
+    console.error(chalk.red("\n  Error:"), err instanceof Error ? err.message : String(err));
+    process.exit(1);
+  });
+}

@@ -1,3 +1,4 @@
+import React from "react";
 /**
  * <PasskeyEnrollment> — pre-built passkey registration card.
  *
@@ -40,7 +41,7 @@ export interface PasskeyEnrollmentProps {
 
 // ── Icons (inline SVG, no external dependency) ────────────────────────────────
 
-function PasskeyIcon(): React.JSX.Element {
+function PasskeyIcon(): React.ReactElement {
   return (
     <svg
       width="36"
@@ -66,7 +67,7 @@ function PasskeyIcon(): React.JSX.Element {
   );
 }
 
-function CheckIcon(): React.JSX.Element {
+function CheckIcon(): React.ReactElement {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path
@@ -90,7 +91,7 @@ export function PasskeyEnrollment({
   title = "Add a passkey",
   description = "Sign in faster using biometrics or your device PIN — no password required.",
   buttonLabel = "Set up passkey",
-}: PasskeyEnrollmentProps): React.JSX.Element | null {
+}: PasskeyEnrollmentProps): React.ReactElement | null {
   const { register, isSupported, isLoading, error } = usePasskey();
   const [enrolled, setEnrolled] = useState(false);
 

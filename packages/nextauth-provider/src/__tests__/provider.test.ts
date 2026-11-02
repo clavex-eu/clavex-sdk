@@ -6,7 +6,7 @@
  */
 
 import { describe, it, expect } from "@jest/globals";
-import { ClavexProvider, clavexCallbacks, ClavexTokenClaims } from "../index.js";
+import { ClavexProvider, ClavexProviderV4, clavexCallbacks, ClavexTokenClaims } from "../index.js";
 
 const BASE_CONFIG = {
   issuer: "https://id.example.com/acme",
@@ -219,5 +219,16 @@ describe("clavexCallbacks.session()", () => {
     const result = clavexCallbacks.session({ session, token });
     const user = result.user as Record<string, unknown>;
     expect(user.orgId).toBe("org-001");
+  });
+});
+
+describe("ClavexProviderV4()", () => {
+  it("enables ID-token mode while preserving discovery and security checks", () => {
+    const provider = ClavexProviderV4(BASE_CONFIG);
+    expect(provider.type).toBe("oauth");
+    expect(provider.idToken).toBe(true);
+    expect(provider.wellKnown).toBe(BASE_CONFIG.issuer + "/.well-known/openid-configuration");
+    expect(provider.checks).toEqual(["pkce", "state", "nonce"]);
+    expect(provider.profile({sub: "user"}).id).toBe("user");
   });
 });

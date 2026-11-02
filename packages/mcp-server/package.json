@@ -1,7 +1,7 @@
 {
   "name": "@clavex/mcp-server",
   "version": "1.0.0",
-  "description": "MCP server for the Clavex Identity Platform — manage orgs, users, IdPs and OIDC clients via natural language",
+  "description": "MCP server for the Clavex Identity Platform \u2014 manage orgs, users, IdPs and OIDC clients via natural language",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
@@ -11,7 +11,8 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "dev": "node --loader ts-node/esm src/index.ts",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "test": "npm run build && node --test test/*.test.mjs"
   },
   "keywords": [
     "clavex",
@@ -24,14 +25,14 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.32.2",
-    "zod": "^3.25.76"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "typescript": "^5.9.3",
     "@types/node": "^20.19.43"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "repository": {
     "type": "git",
