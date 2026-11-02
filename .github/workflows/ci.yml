@@ -20,9 +20,11 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npm run lint --workspaces --if-present
-      - run: npm test
-        # The @clavex/react suite needs a dedicated ESM test setup; do not fail
-        # the whole pipeline on it until that is sorted.
+      - name: Test SDK, NextAuth, UI and webhooks
+        run: npm test --workspace=@clavex/sdk --workspace=@clavex/nextauth-provider --workspace=@clavex/ui --workspace=@clavex/webhooks
+      - name: Test React (known Jest ESM configuration issue)
+        run: npm test --workspace=@clavex/react -- --runInBand
+        # Keep only the known React test configuration issue non-blocking.
         continue-on-error: true
 
   python:
