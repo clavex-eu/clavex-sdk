@@ -1,3 +1,4 @@
+import React from "react";
 /**
  * React context definition for @clavex/react.
  * This module exports only the context object and its type — no React components.

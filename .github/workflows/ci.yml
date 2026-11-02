@@ -10,20 +10,50 @@ permissions:
 
 jobs:
   js:
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [20, 22, 24]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ matrix.node }}
           cache: npm
       - run: npm ci
       - run: npm run build
       - run: npm run lint --workspaces --if-present
       - run: npm test
-        # The @clavex/react suite needs a dedicated ESM test setup; do not fail
-        # the whole pipeline on it until that is sorted.
-        continue-on-error: true
+      - run: npm run test:release
+      - name: Check packed React consumers
+        run: |
+          for version in 17 18 19; do
+            REACT_VERSION=$version npm run test:react-consumer
+          done
+      - name: Check packed NextAuth consumers
+        run: |
+          NEXTAUTH_VERSION=4 npm run test:nextauth-consumer
+          NEXTAUTH_VERSION=5.0.0-beta.32 npm run test:nextauth-consumer
+
+  node18:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+      - name: Verify packages that retain Node 18 support
+        run: |
+          workspaces=(--workspace=@clavex/sdk --workspace=@clavex/react --workspace=@clavex/ui --workspace=@clavex/nextauth-provider --workspace=create-clavex-app --workspace=@clavex/webhooks)
+          npm ci "${workspaces[@]}"
+          npm run build "${workspaces[@]}" --if-present
+          npm run lint "${workspaces[@]}" --if-present
+          npm test "${workspaces[@]}"
+          for version in 17 18 19; do
+            REACT_VERSION=$version npm run test:react-consumer
+          done
 
   python:
     runs-on: ubuntu-latest

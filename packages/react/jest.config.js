@@ -1,23 +1,17 @@
+const path = require("node:path");
+const reactDir = path.dirname(require.resolve("react/package.json"));
+const reactDomDir = path.dirname(require.resolve("react-dom/package.json"));
 module.exports = {
-  preset: "ts-jest",
+  preset: "ts-jest/presets/default-esm",
+  extensionsToTreatAsEsm: [".ts", ".tsx"],
   testEnvironment: "jsdom",
-  testEnvironmentOptions: {
-    customExportConditions: ["node", "require", "default"],
-  },
   setupFiles: ["<rootDir>/__tests__/setup.js"],
   testMatch: ["**/__tests__/**/*.test.ts", "**/__tests__/**/*.test.tsx"],
-  moduleNameMapper: {
-    "^(\\.{1,2}/.*)\\.js$": "$1"
-  },
+  moduleNameMapper: { "^react$": require.resolve("react"), "^react/(.*)$": `${reactDir}/$1`, "^react-dom$": require.resolve("react-dom"), "^react-dom/(.*)$": `${reactDomDir}/$1`, "^(\\.{1,2}/.*)\\.js$": "$1" },
   transform: {
     "^.+\\.(ts|tsx)$": ["ts-jest", {
-      // NOTE: the react package source uses `import.meta.env`, which ts-jest's
-      // default (CommonJS) transform rejects (TS1343). Running this suite needs
-      // a full jest-ESM setup with React CJS/ESM interop handling — tracked
-      // separately; build/typecheck are unaffected.
-      tsconfig: {
-        jsx: "react-jsx"
-      }
-    }]
-  }
+      useESM: true,
+      tsconfig: { module: "ESNext", moduleResolution: "bundler", jsx: "react-jsx", esModuleInterop: true },
+    }],
+  },
 };

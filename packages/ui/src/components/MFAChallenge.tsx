@@ -1,3 +1,4 @@
+import React from "react";
 /**
  * <MFAChallenge> — inline MFA verification card.
  *
@@ -45,7 +46,7 @@ export interface MFAChallengeProps {
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
 
-function LockIcon(): React.JSX.Element {
+function LockIcon(): React.ReactElement {
   return (
     <svg
       width="18"
@@ -75,7 +76,7 @@ export function MFAChallenge({
   title = "Two-factor verification",
   className,
   style,
-}: MFAChallengeProps): React.JSX.Element {
+}: MFAChallengeProps): React.ReactElement {
   const { authenticate, isSupported, isLoading: passkeyLoading, error: passkeyError } = usePasskey();
   const { post } = useClavexApiClient();
 

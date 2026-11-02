@@ -144,7 +144,7 @@ Args:
         "ip": "185.22.1.1", "user_agent": "...", "is_tor": false, "abuseipdb_score": 67 }`,
       inputSchema: {
         org_id:  z.string().uuid().describe("Organization UUID"),
-        signals: z.record(z.unknown()).describe("Risk signals object from a login event"),
+        signals: z.record(z.string(), z.unknown()).describe("Risk signals object from a login event"),
       },
       annotations: { readOnlyHint: true, destructiveHint: false },
     },

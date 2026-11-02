@@ -68,7 +68,7 @@ Examples:
         name:        z.string().describe("Rule name"),
         priority:    z.number().int().min(1).describe("Evaluation order (lower = first)"),
         action:      z.enum(["allow", "deny", "require_mfa"]).describe("Action when rule matches"),
-        conditions:  z.record(z.unknown()).describe("Match conditions JSON object"),
+        conditions:  z.record(z.string(), z.unknown()).describe("Match conditions JSON object"),
         description: z.string().optional().describe("Human-readable explanation"),
       },
       annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: false },

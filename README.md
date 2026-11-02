@@ -55,3 +55,5 @@ pytest               # runs tests
 ## License
 
 Apache License 2.0 — see [LICENSE](LICENSE).
+
+See [COMPATIBILITY.md](COMPATIBILITY.md) for tested React/NextAuth versions, the v4 provider factory, publishing checks and generator template limitations.
