@@ -1,3 +1,4 @@
+import React from "react";
 /**
  * <UserProfile> — pre-built user profile card with tabbed sections.
  *
@@ -47,7 +48,7 @@ export interface UserProfileProps {
 
 // ── Internal icon components ──────────────────────────────────────────────────
 
-function ShieldIcon(): React.JSX.Element {
+function ShieldIcon(): React.ReactElement {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path
@@ -67,7 +68,7 @@ export function UserProfile({
   style,
   extraTabs,
   onSignOut,
-}: UserProfileProps): React.JSX.Element | null {
+}: UserProfileProps): React.ReactElement | null {
   const { user, isLoaded, isSignedIn } = useUser();
   const { org } = useOrg();
   const { signOut, isLoading: signOutLoading } = useSignOut();

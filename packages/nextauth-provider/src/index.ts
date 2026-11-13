@@ -20,14 +20,14 @@
  *     ],
  *   });
  *
- * Usage — NextAuth v4:
+ * Usage — NextAuth v4 (use ClavexProviderV4):
  * ────────────────────
  *   import NextAuth from "next-auth";
- *   import { ClavexProvider } from "@clavex/nextauth-provider";
+ *   import { ClavexProviderV4 } from "@clavex/nextauth-provider";
  *
  *   export default NextAuth({
  *     providers: [
- *       ClavexProvider({
+ *       ClavexProviderV4({
  *         issuer: "https://id.example.com/my-org",
  *         clientId: process.env.CLAVEX_CLIENT_ID,
  *         clientSecret: process.env.CLAVEX_CLIENT_SECRET,
@@ -160,8 +160,13 @@ export function ClavexProvider(config: ClavexProviderConfig) {
       };
     },
 
-    checks: ["pkce", "state", "nonce"] as const,
+    checks: ["pkce", "state", "nonce"] as ("pkce" | "state" | "nonce")[],
   };
+}
+
+/** NextAuth v4 uses the OAuth provider discriminator and explicit ID-token mode. */
+export function ClavexProviderV4(config: ClavexProviderConfig) {
+  return { ...ClavexProvider(config), type: "oauth" as const, idToken: true };
 }
 
 // ── Session / token augmentation helpers ─────────────────────────────────────

@@ -14,7 +14,10 @@
   "scripts": {
     "build": "npm run build --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
-    "lint": "npm run lint --workspaces --if-present"
+    "lint": "npm run lint --workspaces --if-present",
+    "test:release": "node --test scripts/resolve-npm-release.test.mjs",
+    "test:react-consumer": "node scripts/test-react-consumer.mjs",
+    "test:nextauth-consumer": "node scripts/test-nextauth-consumer.mjs"
   },
   "engines": {
     "node": ">=18"

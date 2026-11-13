@@ -1,3 +1,4 @@
+import React from "react";
 /**
  * <SignInButton> — starts the PKCE authorization code flow on click.
  *
@@ -59,7 +60,7 @@ export function SignInButton({
   fullWidth = false,
   disabled = false,
   onError,
-}: SignInButtonProps): React.JSX.Element {
+}: SignInButtonProps): React.ReactElement {
   const { signIn, isLoading, error } = useSignIn();
 
   const handleClick = async () => {

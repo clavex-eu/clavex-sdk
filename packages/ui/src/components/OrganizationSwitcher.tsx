@@ -1,3 +1,4 @@
+import React from "react";
 /**
  * <OrganizationSwitcher> — dropdown to switch between organisations.
  *
@@ -44,7 +45,7 @@ export interface OrganizationSwitcherProps {
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
 
-function ChevronIcon({ className }: { className?: string }): React.JSX.Element {
+function ChevronIcon({ className }: { className?: string }): React.ReactElement {
   return (
     <svg
       className={className}
@@ -65,7 +66,7 @@ function ChevronIcon({ className }: { className?: string }): React.JSX.Element {
   );
 }
 
-function CheckIcon({ className }: { className?: string }): React.JSX.Element {
+function CheckIcon({ className }: { className?: string }): React.ReactElement {
   return (
     <svg
       className={className}
@@ -92,7 +93,7 @@ export function OrganizationSwitcher({
   className,
   style,
   onOrganizationSelect,
-}: OrganizationSwitcherProps): React.JSX.Element | null {
+}: OrganizationSwitcherProps): React.ReactElement | null {
   const { org } = useOrg();
   const { isSignedIn } = useUser();
   const config = useClavexConfig();

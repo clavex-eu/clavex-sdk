@@ -1,3 +1,4 @@
+import React from "react";
 /**
  * <ClavexAccountCenter />
  *
@@ -129,7 +130,7 @@ const SECTION_PATHS: Record<SectionKey, string> = {
 
 // ── Icons (inline SVG, zero dependencies) ────────────────────────────────────
 
-const ICONS: Record<SectionKey, JSX.Element> = {
+const ICONS: Record<SectionKey, React.ReactElement> = {
   profile: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <circle cx="12" cy="8" r="4" />
@@ -214,7 +215,7 @@ export function ClavexAccountCenter({
   className,
   labels,
   onSectionClick,
-}: AccountCenterProps): JSX.Element {
+}: AccountCenterProps): React.ReactElement {
   const { user, isLoaded, isSignedIn } = useUser();
   const { config: providerConfig } = useClavexContext();
 
@@ -343,7 +344,7 @@ interface SectionTileProps {
   onClick: () => void;
 }
 
-function SectionTile({ sectionKey, label, onClick }: SectionTileProps): JSX.Element {
+function SectionTile({ sectionKey, label, onClick }: SectionTileProps): React.ReactElement {
   const [hovered, setHovered] = useState(false);
 
   return (
